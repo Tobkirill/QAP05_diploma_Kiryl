@@ -1,0 +1,1 @@
+# QAP05_diploma_Kiryl
