@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 from pages.login_page import LoginPage
+from pages.login_page import email
+from pages.login_page import password
 
 
 @pytest.fixture(scope="function")
@@ -13,7 +15,7 @@ def driver():
     driver = webdriver.Chrome(options=options)
     login_page = LoginPage(driver)
     login_page.open()
-    login_page.fill_in_form_and_login()
+    login_page.fill_in_form_and_login(email, password)
     yield driver
     sleep(3)
     driver.quit()
