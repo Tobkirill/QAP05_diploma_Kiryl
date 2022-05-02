@@ -1,7 +1,7 @@
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-user_name = 'Aaa'
+user_name = 'Qqq'
 user_name_text = (By.CSS_SELECTOR, '.text-2xl.text-center')
 create_list = (By.XPATH, '/html/body/div[2]/main/section[2]/div/div[1]/span[3]/a')
 create_list_link = "https://www.giftster.com/list/new/"

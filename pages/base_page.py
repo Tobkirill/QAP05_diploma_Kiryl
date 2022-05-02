@@ -35,7 +35,7 @@ class BasePage:
             return False
         return True
 
-    def get_tag_attribute(self, element):
+    def get_element_attributes(self, element):
         return self.driver.execute_script(
             """
             let attr = arguments[0].attributes;
@@ -50,15 +50,15 @@ class BasePage:
 
     def is_field_required(self, field):
         element = self.find_element(field)
-        attributes = self.get_tag_attribute(element)
+        attributes = self.get_element_attributes(element)
         assert attributes['required'] == 'required'
 
-    def is_url_remains(self, url):
+    def is_url_correct(self, url):
         assert self.driver.current_url == url
 
     def is_checkbox_checked(self, checkbox):
         checkbox_element = self.find_element(checkbox)
-        checkbox_attributes = self.get_tag_attribute(checkbox_element)
+        checkbox_attributes = self.get_element_attributes(checkbox_element)
         assert checkbox_attributes['checked'] == 'checked'
 
     def tick_checkbox(self, checkbox):

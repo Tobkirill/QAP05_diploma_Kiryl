@@ -1,5 +1,7 @@
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 name_of_list_field = (By.ID, 'id_privacy-title')
 add_a_note_field = (By.ID, 'id_privacy-description')
@@ -9,9 +11,12 @@ private_list_button = (By.CSS_SELECTOR, '.flex.border>button:nth-child(1)')
 group_list_button = (By.CSS_SELECTOR, '.flex.border>button:nth-child(2)')
 public_list_button = (By.CSS_SELECTOR, '.flex.border>button:nth-child(3)')
 first_group_checkbox = (By.ID, 'id_perms-group_0')
+public_search_option_gifster_and_google = (By.ID, 'id_privacy-search_visibility_2')
+public_search_option_gifster = (By.ID, 'id_privacy-search_visibility_1')
+public_search_option_share_link = (By.ID, 'id_privacy-search_visibility_0')
 
 create_new_list_url = 'https://www.giftster.com/list/new/'
-name_of_list_text = 'MyList2'
+name_of_list_text = 'MyList3'
 note_text = 'Important Note'
 
 
@@ -30,17 +35,14 @@ class CreateNewListPage(BasePage):
         simple_red_color_button_element = self.find_element(simple_red_color_button)
         simple_red_color_button_element.click()
 
-    def choose_private_list(self):
-        private_list_button_element = self.find_element(private_list_button)
-        private_list_button_element.click()
+    def choose_privacy_of_list(self, privacy):
+        privacy_element = self.find_element(privacy)
+        privacy_element.click()
 
-    def choose_public_list(self):
-        public_list_button_element = self.find_element(public_list_button)
-        public_list_button_element.click()
-
-    def choose_shared_list(self):
-        group_list_button_element = self.find_element(group_list_button)
-        group_list_button_element.click()
+    def choose_public_search_options(self, option):
+        option_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(option))
+        option_element.click()
 
 
 
