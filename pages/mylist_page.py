@@ -37,11 +37,22 @@ stars_in_items_section = (star_1_in_items_section, star_2_in_items_section, star
 price_of_item_field = (By.CSS_SELECTOR, '.px-3>span>input')
 where_to_by_field = (By.CSS_SELECTOR, '.px-3>input')
 price_of_item_in_items_section = (By.CSS_SELECTOR, '.mr-6>h2')
+quantity_field = (By.CSS_SELECTOR, '.mt-2>.flex.items-center>:nth-child(2)')
+quantity_of_items_in_items_section = (By.CSS_SELECTOR, '.mr-7.w-18>h2')
+where_to_buy_field = (By.CSS_SELECTOR, '.px-3.mb-5>input')
+description_field = (By.CSS_SELECTOR, 'textarea.h-20')
 
-gift_name = (By.CSS_SELECTOR, '.flex.px-6>.rounded-md')
+gift_name_field = (By.CSS_SELECTOR, '.flex.px-6>.rounded-md')
 name_of_gift_in_items_section = (By.CSS_SELECTOR, '.text-sm.font-medium.ml-3')
 save_adding_new_item_button = (By.XPATH, '//*[@id="createItemForm"]/div/div[2]/div[2]/div[1]/div[6]/div/button[1]')
 adding_new_item_info_message = (By.CSS_SELECTOR, 'div>span.ml-3')
+
+
+fetch_button = (By.CSS_SELECTOR, '.hidden>.py-0.pl-5')
+web_link_field = (By.CLASS_NAME, 'link')
+image_of_fetched_item_in_the_right = (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]'
+                                                '/div[2]/div[2]/div/div/img')
+image_of_fetched_item_in_the_below = (By.CSS_SELECTOR, '[style="max-height: 500px;"]')
 
 private_label_in_the_left_menu_text = 'private'
 public_label_in_the_left_menu_text = 'public'
@@ -54,6 +65,24 @@ gift_name_text = 'Phone'
 adding_new_item_info_message_text = 'Awesome, you added your first item.'
 quantity_of_stars_to_rate = 3
 price_of_item_text = '20 dollars'
+quantity_of_items = '5'
+where_to_buy_field_text = 'City mall'
+description_of_item_text = 'Very cool item'
+
+web_link_to_fetch = 'https://www.amazon.com/HP-Touch-Screen-Quad-Core-i7-10510U-15-EB0043DX/dp/B08CS48VZR/ref=' \
+                    'psdc_13896609011_t1_B08RRSVW52'
+name_of_fetched_item = 'HP Spectre X360 15.6 Inch 4K UHD Touch-Screen 512GB SSD + 32GB Optane 1.8GHz i7 2-in-1 Laptop' \
+                       ' (16GB RAM, Quad-Core i7-10510U, GeForce MX330, Windows 10 Home) Nightfall Black 15-EB0043DX'
+
+price_of_fetched_item = '$2196.99'
+where_to_buy_fetched_item = 'see web link'
+description_of_fetched_item = '''360° Flip-and-Fold Design, 1.8GHz 10th Gen Intel i7-10510U Quad-Core (up to 4.9GHz)
+
+15.6" Diagonal 4K UHD WLED Touch Display (3840 x 2160) 340 nits, intel GPU (2GB)
+
+512GB SSD + 32GB Intel Optane, 16GB DDR4 SDRAM, SD Card Reader, Bang & Olufsen Quad speakers'''
+
+image_link_of_fetched_item = 'https://m.media-amazon.com/images/I/41WbnO94WUL._SL500_.jpg'
 
 
 class MyListPage(BasePage):
@@ -124,6 +153,11 @@ class MyListPage(BasePage):
             EC.presence_of_element_located(adding_new_item_info_message))
         assert adding_new_item_info_message_element.text == adding_new_item_info_message_text
 
+    def is_item_section_displayed(self):
+        item_section_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(item_section))
+        assert item_section_element
+
     def start_to_edit_added_item(self):
         item_element = self.find_element(item_section)
         item_element.click()
@@ -187,12 +221,43 @@ class MyListPage(BasePage):
                 counter += 1
         return counter
 
-    def is_star_rating_correct(self, quantity_of_stars_expected):
+    def is_star_rating_correct(self):
         quantity_of_active_stars = self.quantity_of_stars_active()
-        assert quantity_of_active_stars == quantity_of_stars_expected
+        assert quantity_of_active_stars == quantity_of_stars_to_rate
 
-    def is_price_of_item_correct_and_displayed(self, price_expected):
+    def is_price_of_item_correct_and_displayed(self):
         price_of_item_in_items_section_element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located(price_of_item_in_items_section))
-        assert price_of_item_in_items_section_element.text == price_expected
+        assert price_of_item_in_items_section_element.text == price_of_item_text
+
+    def set_quantity_of_items(self, quantity):
+        quantity_field_element = self.find_element(quantity_field)
+        quantity_field_element.clear()
+        quantity_field_element.send_keys(quantity)
+
+    def is_quantity_of_items_displayed_correct(self):
+        quantity_of_items_in_items_section_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(quantity_of_items_in_items_section))
+        assert quantity_of_items_in_items_section_element.text == quantity_of_items
+
+    def fetch_link_of_item(self):
+        fetch_button_element = self.find_element(fetch_button)
+        fetch_button_element.click()
+
+    def is_images_links_fetched_correctly(self):
+        image_of_fetched_item_in_the_right_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(image_of_fetched_item_in_the_right))
+        assert image_of_fetched_item_in_the_right_element.get_attribute('src') == image_link_of_fetched_item
+        image_of_fetched_item_in_the_below_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(image_of_fetched_item_in_the_below))
+        image_of_fetched_item_in_the_below_element.get_attribute('src')
+        assert image_of_fetched_item_in_the_below_element.get_attribute('src') == image_link_of_fetched_item
+
+    def is_add_item_form_populated_with_correct_values(self):
+        self.is_field_populated_with_value(web_link_field, web_link_to_fetch)
+        self.is_field_populated_with_value(gift_name_field, name_of_fetched_item)
+        self.is_field_populated_with_value(price_of_item_field, price_of_fetched_item)
+        self.is_field_populated_with_value(where_to_by_field, where_to_buy_fetched_item)
+        self.is_field_populated_with_value(description_field, description_of_fetched_item)
+        self.is_images_links_fetched_correctly()
 

@@ -1,6 +1,7 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
     def __init__(self, driver: WebDriver):
@@ -64,3 +65,8 @@ class BasePage:
     def tick_checkbox(self, checkbox):
         checkbox_element = self.find_element(checkbox)
         checkbox_element.click()
+
+    def is_field_populated_with_value(self, field, expected_text):
+        field_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(field))
+        assert field_element.get_attribute('value') == expected_text
