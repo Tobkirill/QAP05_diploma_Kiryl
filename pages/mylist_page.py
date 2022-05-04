@@ -18,9 +18,13 @@ create_new_list_from_my_list_page_button = (By.CLASS_NAME, 'btn-tan-200')
 share_button = (By.CSS_SELECTOR, '[type=button]>.px-3')
 copy_link_button = (By.CSS_SELECTOR, '.w-48.mt-3')
 add_item_white_button = (By.CSS_SELECTOR, '.z-10.pl-2>button:nth-child(1)')
-item_section = (By.CSS_SELECTOR, '.flex.w-full.h-20')
+item_1_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(1)')
+item_2_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(2)')
+items_section = (By.CSS_SELECTOR, 'ul.-mt-5>li')
 remove_item_button = (By.CSS_SELECTOR, '.w-full.ml-4')
 copy_item_button = (By.CSS_SELECTOR, '.justify-center>[title="Copy item to another list"]')
+confirm_copy_item_button = (By.CSS_SELECTOR, '.btn-yellow-400.btn-sm')
+choose_list_dropdown = (By.CSS_SELECTOR, '[name="list"]')
 i_got_this_button = (By.CSS_SELECTOR, '.justify-center>[title=" Delete and move item to I Got This list "]')
 rate_1_stars_button = (By.CSS_SELECTOR, '.flex.mt-7>.px-3>.flex>span:nth-child(1)')
 rate_2_stars_button = (By.CSS_SELECTOR, '.flex.mt-7>.px-3>.flex>span:nth-child(2)')
@@ -41,11 +45,18 @@ quantity_field = (By.CSS_SELECTOR, '.mt-2>.flex.items-center>:nth-child(2)')
 quantity_of_items_in_items_section = (By.CSS_SELECTOR, '.mr-7.w-18>h2')
 where_to_buy_field = (By.CSS_SELECTOR, '.px-3.mb-5>input')
 description_field = (By.CSS_SELECTOR, 'textarea.h-20')
-
+settings_button = (By.CSS_SELECTOR, 'p>a')
+delete_list_button = (By.CSS_SELECTOR, '.text-red-600.underline')
+yes_delete_button = (By.CSS_SELECTOR, '[name="confirm"]')
 gift_name_field = (By.CSS_SELECTOR, '.flex.px-6>.rounded-md')
-name_of_gift_in_items_section = (By.CSS_SELECTOR, '.text-sm.font-medium.ml-3')
-save_adding_new_item_button = (By.XPATH, '//*[@id="createItemForm"]/div/div[2]/div[2]/div[1]/div[6]/div/button[1]')
+name_of_gift_in_items_section = (By.CSS_SELECTOR, '.w-48>h2')
+# save_adding_new_item_button = (By.CSS_SELECTOR, '.mt-5>button:nth-child(1)')
+save_adding_new_item_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[1]')
+cancel_adding_new_item_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[2]')
 adding_new_item_info_message = (By.CSS_SELECTOR, 'div>span.ml-3')
+
 
 
 fetch_button = (By.CSS_SELECTOR, '.hidden>.py-0.pl-5')
@@ -155,11 +166,17 @@ class MyListPage(BasePage):
 
     def is_item_section_displayed(self):
         item_section_element = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(item_section))
+            EC.presence_of_element_located(item_1_section))
+        assert item_section_element
+
+    def is_item_section_not_displayed(self):
+        item_section_element = WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(item_1_section))
         assert item_section_element
 
     def start_to_edit_added_item(self):
-        item_element = self.find_element(item_section)
+        item_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(item_1_section))
         item_element.click()
 
     def is_edit_mode_contains_new_elements(self):
@@ -176,7 +193,7 @@ class MyListPage(BasePage):
 
     def is_removed_item_not_displayed(self):
         item_section_element = WebDriverWait(self.driver, 10).until(
-            EC.invisibility_of_element_located(item_section))
+            EC.invisibility_of_element_located(item_1_section))
         assert item_section_element
 
     def rate_item_with_stars(self, quantity_of_stars):
@@ -260,4 +277,47 @@ class MyListPage(BasePage):
         self.is_field_populated_with_value(where_to_by_field, where_to_buy_fetched_item)
         self.is_field_populated_with_value(description_field, description_of_fetched_item)
         self.is_images_links_fetched_correctly()
+
+    def cancel_adding_new_item(self):
+        cancel_adding_new_item_button_element = self.find_element(cancel_adding_new_item_button)
+        cancel_adding_new_item_button_element.click()
+
+    def copy_item_in_edit_mode(self):
+        copy_item_button_element = self.find_element(copy_item_button)
+        copy_item_button_element.click()
+
+    def get_quantity_of_items_in_list(self):
+        items_section_element = self.find_elements(items_section)
+        print(len(items_section_element))
+        return len(items_section_element)
+
+    def remove_all_added_items(self):
+        for i in range(self.get_quantity_of_items_in_list()):
+            self.start_to_edit_added_item()
+            self.remove_added_item()
+            sleep(3)
+
+    def delete_list(self):
+        settings_button_element = self.find_element(settings_button)
+        settings_button_element.click()
+        delete_list_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(delete_list_button))
+        delete_list_button_element.click()
+        yes_delete_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(yes_delete_button))
+        yes_delete_button_element.click()
+
+    def confirm_of_copying_item(self):
+        confirm_copy_item_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(confirm_copy_item_button))
+        sleep(3)
+        confirm_copy_item_button_element.click()
+
+    def is_item_copied(self):
+        assert self.get_quantity_of_items_in_list() == 2
+        items_in_items_section = self.find_elements(items_section)
+        for item in items_in_items_section:
+            assert item.text == gift_name_text + '\n' + quantity_of_items
+
+
 

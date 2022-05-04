@@ -15,6 +15,7 @@ from pages.mylist_page import description_field
 from pages.mylist_page import description_of_item_text
 from pages.mylist_page import web_link_to_fetch
 from pages.mylist_page import web_link_field
+from pages.mylist_page import name_of_fetched_item
 from time import sleep
 
 
@@ -34,8 +35,8 @@ def test_ability_to_share_link_to_the_list(driver):
     my_list_page.is_share_link_correct()
 
 
-def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver):
-    my_list_page = MyListPage(driver)
+def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
     my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.save_adding_new_item()
@@ -43,14 +44,20 @@ def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver):
     my_list_page.is_gift_name_in_items_section_correct(gift_name_text)
 
 
-def test_ability_to_edit_item(driver):
-    my_list_page = MyListPage(driver)
+def test_ability_to_edit_item(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.save_adding_new_item()
     my_list_page.start_to_edit_added_item()
     my_list_page.is_edit_mode_contains_new_elements()
 
 
-def test_ability_to_remove_item_from_list(driver):
-    my_list_page = MyListPage(driver)
+def test_ability_to_remove_item_from_list(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.save_adding_new_item()
     my_list_page.start_to_edit_added_item()
     my_list_page.remove_added_item()
     my_list_page.is_removed_item_not_displayed()
@@ -58,6 +65,7 @@ def test_ability_to_remove_item_from_list(driver):
 
 def test_ability_to_add_item_with_stars_rating(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.rate_item_with_stars(quantity_of_stars_to_rate)
     my_list_page.save_adding_new_item()
@@ -66,6 +74,7 @@ def test_ability_to_add_item_with_stars_rating(driver_teardown_remove_item):
 
 def test_ability_to_add_item_with_price(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.fill_in_field(price_of_item_field, price_of_item_text)
     my_list_page.save_adding_new_item()
@@ -74,6 +83,7 @@ def test_ability_to_add_item_with_price(driver_teardown_remove_item):
 
 def test_ability_to_add_item_with_increased_quantity(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.set_quantity_of_items(quantity_of_items)
     my_list_page.save_adding_new_item()
@@ -82,6 +92,7 @@ def test_ability_to_add_item_with_increased_quantity(driver_teardown_remove_item
 
 def test_ability_to_add_item_with_where_to_buy_info(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.fill_in_field(where_to_by_field, where_to_buy_field_text)
     my_list_page.save_adding_new_item()
@@ -90,6 +101,7 @@ def test_ability_to_add_item_with_where_to_buy_info(driver_teardown_remove_item)
 
 def test_ability_to_add_item_with_description(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
     my_list_page.fill_in_field(description_field, description_of_item_text)
     my_list_page.save_adding_new_item()
@@ -100,7 +112,37 @@ def test_ability_to_fetch_web_link(driver):
     my_list_page = MyListPage(driver)
     my_list_page.fill_in_field(web_link_field, web_link_to_fetch)
     my_list_page.fetch_link_of_item()
-    sleep(5)
+    sleep(3)
     my_list_page.is_add_item_form_populated_with_correct_values()
+
+
+def test_ability_to_add_item_with_fetched_link(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.fill_in_field(web_link_field, web_link_to_fetch)
+    my_list_page.fetch_link_of_item()
+    my_list_page.save_adding_new_item()
+    my_list_page.is_item_section_displayed()
+    my_list_page.is_gift_name_in_items_section_correct(name_of_fetched_item)
+
+
+def test_ability_to_cancel_of_adding_item(driver):
+    my_list_page = MyListPage(driver)
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.cancel_adding_new_item()
+    my_list_page.is_item_section_not_displayed()
+
+
+def test_ability_to_copy_item_to_the_same_list(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.set_quantity_of_items(quantity_of_items)
+    my_list_page.save_adding_new_item()
+    my_list_page.start_to_edit_added_item()
+    my_list_page.copy_item_in_edit_mode()
+    my_list_page.confirm_of_copying_item()
+    sleep(2)
+    my_list_page.driver.refresh()
+    my_list_page.is_item_copied()
 
 

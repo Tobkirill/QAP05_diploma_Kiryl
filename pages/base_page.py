@@ -69,4 +69,5 @@ class BasePage:
     def is_field_populated_with_value(self, field, expected_text):
         field_element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located(field))
+        print(field_element.get_attribute('value'))
         assert field_element.get_attribute('value') == expected_text
