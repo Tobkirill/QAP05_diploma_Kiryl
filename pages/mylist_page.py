@@ -4,6 +4,7 @@ import re
 from tkinter import Tk
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 from time import sleep
 
 full_username = (By.CSS_SELECTOR, '.hidden.ml-2')
@@ -21,6 +22,14 @@ add_item_white_button = (By.CSS_SELECTOR, '.z-10.pl-2>button:nth-child(1)')
 item_1_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(1)')
 item_2_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(2)')
 items_section = (By.CSS_SELECTOR, 'ul.-mt-5>li')
+add_image_section = (By.CSS_SELECTOR, 'div.hidden>div>div>.border-dashed')
+web_search_field_in_add_image_pop_up = (By.CLASS_NAME, 'fsp-url-source__input')
+start_search_button = (By.CLASS_NAME, 'fsp-url-source__submit-button')
+search_results = (By.CLASS_NAME, 'fsp-image-grid__image')
+upload_image_button = (By.CSS_SELECTOR, '[title="Upload"]')
+close_add_image_pop_up_button = (By.CLASS_NAME, 'fsp-picker__close-button')
+image_in_the_last_step_of_upload = (By.CSS_SELECTOR, 'img.cropper-hidden')
+uploaded_image_section = (By.CSS_SELECTOR, 'div.hidden>div>div>img')
 remove_item_button = (By.CSS_SELECTOR, '.w-full.ml-4')
 copy_item_button = (By.CSS_SELECTOR, '.justify-center>[title="Copy item to another list"]')
 confirm_copy_item_button = (By.CSS_SELECTOR, '.btn-yellow-400.btn-sm')
@@ -49,14 +58,22 @@ settings_button = (By.CSS_SELECTOR, 'p>a')
 delete_list_button = (By.CSS_SELECTOR, '.text-red-600.underline')
 yes_delete_button = (By.CSS_SELECTOR, '[name="confirm"]')
 gift_name_field = (By.CSS_SELECTOR, '.flex.px-6>.rounded-md')
+gift_name_field_in_edition_mode = (By.CSS_SELECTOR, '.px-5>input')
 name_of_gift_in_items_section = (By.CSS_SELECTOR, '.w-48>h2')
 # save_adding_new_item_button = (By.CSS_SELECTOR, '.mt-5>button:nth-child(1)')
 save_adding_new_item_button = (
     By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[1]')
+save_edition_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[1]/ul/li/div[2]/div[2]/div/div[1]/div[7]/div/button[1]'
+)
 cancel_adding_new_item_button = (
     By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[2]')
+cancel_edition_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[1]/ul/li/div[2]/div[2]/div/div[1]/div[7]/div/button[3]'
+)
 adding_new_item_info_message = (By.CSS_SELECTOR, 'div>span.ml-3')
-
+i_got_it_list = (By.CSS_SELECTOR, '[href="/list/i-got-this/"]')
+validation_warning = (By.CSS_SELECTOR, 'p.my-3')
 
 
 fetch_button = (By.CSS_SELECTOR, '.hidden>.py-0.pl-5')
@@ -72,7 +89,7 @@ private_label_near_settings_text = 'private list'
 public_label_near_settings_text = 'public list'
 shared_label_near_settings_text = 'shared list'
 full_username_text = 'dasasda sdadad'
-gift_name_text = 'Phone'
+gift_name_text = 'Laptop'
 adding_new_item_info_message_text = 'Awesome, you added your first item.'
 quantity_of_stars_to_rate = 3
 price_of_item_text = '20 dollars'
@@ -94,7 +111,11 @@ description_of_fetched_item = '''360° Flip-and-Fold Design, 1.8GHz 10th Gen Int
 512GB SSD + 32GB Intel Optane, 16GB DDR4 SDRAM, SD Card Reader, Bang & Olufsen Quad speakers'''
 
 image_link_of_fetched_item = 'https://m.media-amazon.com/images/I/41WbnO94WUL._SL500_.jpg'
-
+number_of_image = 1
+link_of_image_to_add = \
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR6G_V7PZUtl0jWV315SnVXJXnQZD0Cygi4M9hWezGBNE8nb0O6Zhv8Co&s'
+keyword_image_to_search = 'laptop'
+new_gift_name_for_edition = 'Phone'
 
 class MyListPage(BasePage):
     def __init__(self, driver):
@@ -156,7 +177,8 @@ class MyListPage(BasePage):
         add_item_white_button_element.click()
 
     def save_adding_new_item(self):
-        save_adding_new_item_button_element = self.find_element(save_adding_new_item_button)
+        save_adding_new_item_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(save_adding_new_item_button))
         save_adding_new_item_button_element.click()
 
     def is_adding_new_item_info_message_present(self):
@@ -175,6 +197,7 @@ class MyListPage(BasePage):
         assert item_section_element
 
     def start_to_edit_added_item(self):
+        sleep(1)
         item_element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located(item_1_section))
         item_element.click()
@@ -287,8 +310,11 @@ class MyListPage(BasePage):
         copy_item_button_element.click()
 
     def get_quantity_of_items_in_list(self):
+        try:
+            self.driver.switch_to.alert.dismiss()
+        except NoAlertPresentException:
+            pass
         items_section_element = self.find_elements(items_section)
-        print(len(items_section_element))
         return len(items_section_element)
 
     def remove_all_added_items(self):
@@ -319,5 +345,71 @@ class MyListPage(BasePage):
         for item in items_in_items_section:
             assert item.text == gift_name_text + '\n' + quantity_of_items
 
+    def start_i_got_this_process(self):
+        i_got_this_button_element = self.find_element(i_got_this_button)
+        i_got_this_button_element.click()
 
+    def open_i_got_it_list(self):
+        i_got_it_list_element = self.find_element(i_got_it_list)
+        i_got_it_list_element.click()
 
+    def start_to_add_image(self):
+        add_image_section_element = self.find_element(add_image_section)
+        add_image_section_element.click()
+
+    def search_image(self, keyword_for_search):
+        web_search_field_in_add_image_pop_up_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(web_search_field_in_add_image_pop_up))
+        web_search_field_in_add_image_pop_up_element.send_keys(keyword_for_search)
+        start_search_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(start_search_button))
+        start_search_button_element.click()
+
+    def choose_image_in_search(self, number_of_image_to_add):
+        search_elements = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located(search_results))
+        sleep(3)
+        search_elements[number_of_image_to_add-1].click()
+
+    def upload_chosen_image(self):
+        image_in_the_last_step_of_upload_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(image_in_the_last_step_of_upload))
+        upload_image_button_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(upload_image_button))
+        sleep(5)
+        upload_image_button_element.click()
+
+    def close_add_image_pop_up(self):
+        try:
+            close_add_image_pop_up_button_element = self.find_element(close_add_image_pop_up_button)
+            close_add_image_pop_up_button_element.click()
+        except NoSuchElementException:
+            pass
+
+    def get_src_url_of_uploaded_image(self):
+        uploaded_image_section_element = self.find_element(uploaded_image_section)
+        src_of_uploaded_img = uploaded_image_section_element.get_attribute('src')
+        return src_of_uploaded_img
+
+    def is_image_in_items_section_correct(self, expected_url_of_img):
+        assert WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, f'[src="{expected_url_of_img}"]')))
+
+    def is_validation_pop_up_with_correct_warning_appeared(self):
+        validation_warning_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(validation_warning))
+        assert validation_warning_element.text == 'Please enter an item name'
+
+    def save_edition_of_item(self):
+        save_edition_button_element = self.find_element(save_edition_button)
+        save_edition_button_element.click()
+
+    def cancel_edition_of_item(self):
+        cancel_edition_button_element = self.find_element(cancel_edition_button)
+        cancel_edition_button_element.click()
+
+    def is_edited_gift_name_correct_in_item_section(self):
+        edited_name_element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(name_of_gift_in_items_section))
+        print(edited_name_element.text)
+        assert edited_name_element.text == new_gift_name_for_edition

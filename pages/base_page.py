@@ -31,6 +31,7 @@ class BasePage:
     def fill_in_field(self, field, text):
         try:
             element = self.driver.find_element(*field)
+            element.clear()
             element.send_keys(text)
         except NoSuchElementException:
             return False

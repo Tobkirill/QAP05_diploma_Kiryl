@@ -45,6 +45,7 @@ def driver_teardown_remove_item():
     login_page.fill_in_form_and_login(email, password)
     yield driver
     try:
+        sleep(1)
         my_list_page = MyListPage(driver)
         my_list_page.open_my_list_page()
         my_list_page.remove_all_added_items()

@@ -16,6 +16,10 @@ from pages.mylist_page import description_of_item_text
 from pages.mylist_page import web_link_to_fetch
 from pages.mylist_page import web_link_field
 from pages.mylist_page import name_of_fetched_item
+from pages.mylist_page import keyword_image_to_search
+from pages.mylist_page import number_of_image
+from pages.mylist_page import new_gift_name_for_edition
+from pages.mylist_page import gift_name_field_in_edition_mode
 from time import sleep
 
 
@@ -44,7 +48,7 @@ def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver_teardo
     my_list_page.is_gift_name_in_items_section_correct(gift_name_text)
 
 
-def test_ability_to_edit_item(driver_teardown_remove_item):
+def test_ability_to_start_to_edit_item(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
     my_list_page.start_to_add_new_item_to_list()
     my_list_page.fill_in_field(gift_name_field, gift_name_text)
@@ -108,6 +112,38 @@ def test_ability_to_add_item_with_description(driver_teardown_remove_item):
     my_list_page.is_item_section_displayed()
 
 
+def test_ability_to_add_item_with_image(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.start_to_add_image()
+    my_list_page.search_image(keyword_image_to_search)
+    my_list_page.choose_image_in_search(number_of_image)
+    my_list_page.upload_chosen_image()
+    my_list_page.close_add_image_pop_up()
+    image_of_url_expected = my_list_page.get_src_url_of_uploaded_image()
+    my_list_page.save_adding_new_item()
+    my_list_page.is_item_section_displayed()
+    my_list_page.is_image_in_items_section_correct(image_of_url_expected)
+
+
+def test_ability_to_create_list_only_with_optional_fields(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(price_of_item_field, price_of_item_text)
+    my_list_page.fill_in_field(where_to_by_field, where_to_buy_field_text)
+    my_list_page.fill_in_field(description_field, description_of_item_text)
+    my_list_page.save_adding_new_item()
+    my_list_page.is_validation_pop_up_with_correct_warning_appeared()
+
+
+def test_ability_to_create_list_with_all_empty_fields(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.save_adding_new_item()
+    my_list_page.is_validation_pop_up_with_correct_warning_appeared()
+
+
 def test_ability_to_fetch_web_link(driver):
     my_list_page = MyListPage(driver)
     my_list_page.fill_in_field(web_link_field, web_link_to_fetch)
@@ -132,6 +168,19 @@ def test_ability_to_cancel_of_adding_item(driver):
     my_list_page.is_item_section_not_displayed()
 
 
+def test_ability_to_save_changes_after_edition_of_list(driver_teardown_remove_item):
+    my_list_page = MyListPage(driver_teardown_remove_item)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.save_adding_new_item()
+    my_list_page.start_to_edit_added_item()
+    my_list_page.fill_in_field(gift_name_field_in_edition_mode, new_gift_name_for_edition)
+    my_list_page.save_edition_of_item()
+    sleep(1)
+    my_list_page.driver.refresh()
+    my_list_page.is_edited_gift_name_correct_in_item_section()
+
+
 def test_ability_to_copy_item_to_the_same_list(driver_teardown_remove_item):
     my_list_page = MyListPage(driver_teardown_remove_item)
     my_list_page.start_to_add_new_item_to_list()
@@ -144,5 +193,19 @@ def test_ability_to_copy_item_to_the_same_list(driver_teardown_remove_item):
     sleep(2)
     my_list_page.driver.refresh()
     my_list_page.is_item_copied()
+
+
+def test_ability_to_set_item_as_i_got_this_item(driver):
+    my_list_page = MyListPage(driver)
+    my_list_page.start_to_add_new_item_to_list()
+    my_list_page.fill_in_field(gift_name_field, gift_name_text)
+    my_list_page.save_adding_new_item()
+    my_list_page.start_to_edit_added_item()
+    my_list_page.start_i_got_this_process()
+    my_list_page.is_item_section_not_displayed()
+    my_list_page.driver.refresh()
+    my_list_page.open_i_got_it_list()
+    my_list_page.is_item_section_displayed()
+    my_list_page.is_gift_name_in_items_section_correct(gift_name_text)
 
 
