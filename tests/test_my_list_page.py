@@ -8,8 +8,10 @@ from pages.locators import create_new_list_locators
 from pages.testing_data import create_new_list_test_data
 from time import sleep
 import allure
+import pytest
 
 
+@allure.feature('Create new list')
 def test_ability_to_start_creation_of_new_list_from_my_list_page(driver):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver)
@@ -25,6 +27,7 @@ def test_ability_to_start_creation_of_new_list_from_my_list_page(driver):
         my_list_page.is_url_correct(create_new_list_test_data.create_new_list_url)
 
 
+@allure.feature('Create new list')
 def test_ability_to_share_link_to_the_list(driver):
     with allure.step('Open my list page'):
         my_list_page = MyListPage(driver)
@@ -34,6 +37,7 @@ def test_ability_to_share_link_to_the_list(driver):
         my_list_page.is_share_link_correct()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -49,6 +53,7 @@ def test_ability_to_add_item_only_with_filled_obligatory_gift_name(driver_teardo
         my_list_page.is_gift_name_in_items_section_correct(my_list_page_test_data.gift_name_text)
 
 
+@allure.feature('Edit item')
 def test_ability_to_start_to_edit_item(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -64,6 +69,7 @@ def test_ability_to_start_to_edit_item(driver_teardown_remove_item):
         my_list_page.is_edit_mode_contains_new_elements()
 
 
+@allure.feature('Edit item')
 def test_ability_to_cancel_edit_of_item(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -86,6 +92,7 @@ def test_ability_to_cancel_edit_of_item(driver_teardown_remove_item):
         my_list_page.is_gift_name_in_items_section_correct(my_list_page_test_data.gift_name_text)
 
 
+@allure.feature('Edit item')
 def test_ability_to_remove_item_from_list(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -103,6 +110,7 @@ def test_ability_to_remove_item_from_list(driver_teardown_remove_item):
         my_list_page.is_removed_item_not_displayed()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_stars_rating(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -118,6 +126,7 @@ def test_ability_to_add_item_with_stars_rating(driver_teardown_remove_item):
         my_list_page.is_star_rating_correct(my_list_page_test_data.rating_3_stars)
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_price(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -133,6 +142,7 @@ def test_ability_to_add_item_with_price(driver_teardown_remove_item):
         my_list_page.is_price_of_item_correct_and_displayed()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_increased_quantity(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -148,6 +158,7 @@ def test_ability_to_add_item_with_increased_quantity(driver_teardown_remove_item
         my_list_page.is_quantity_of_items_displayed_correct()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_where_to_buy_info(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -164,6 +175,7 @@ def test_ability_to_add_item_with_where_to_buy_info(driver_teardown_remove_item)
         my_list_page.is_item_section_displayed()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_description(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -180,6 +192,7 @@ def test_ability_to_add_item_with_description(driver_teardown_remove_item):
         my_list_page.is_item_section_displayed()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_image(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -207,6 +220,7 @@ def test_ability_to_add_item_with_image(driver_teardown_remove_item):
         my_list_page.is_image_in_items_section_correct(image_of_url_expected)
 
 
+@allure.feature('Add item to list')
 def test_ability_to_create_item_only_with_optional_fields(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -226,6 +240,8 @@ def test_ability_to_create_item_only_with_optional_fields(driver_teardown_remove
         my_list_page.is_validation_pop_up_with_correct_warning_appeared()
 
 
+@allure.feature('Add item to list')
+@pytest.mark.xfail(reson='Price of item is not fetching')
 def test_ability_to_fetch_web_link(driver):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver)
@@ -238,6 +254,7 @@ def test_ability_to_fetch_web_link(driver):
         my_list_page.is_add_item_form_populated_with_correct_values()
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_item_with_fetched_link(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -254,6 +271,7 @@ def test_ability_to_add_item_with_fetched_link(driver_teardown_remove_item):
         my_list_page.is_gift_name_in_items_section_correct(my_list_page_test_data.name_of_fetched_item)
 
 
+@allure.feature('Add item to list')
 def test_ability_to_add_more_than_one_item(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -275,6 +293,7 @@ def test_ability_to_add_more_than_one_item(driver_teardown_remove_item):
         my_list_page.is_item_section_contains_correct_count_of_items(2)
 
 
+@allure.feature('Add item to list')
 def test_ability_to_cancel_of_adding_item(driver):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver)
@@ -286,6 +305,7 @@ def test_ability_to_cancel_of_adding_item(driver):
         my_list_page.is_item_section_not_displayed()
 
 
+@allure.feature('Edit item')
 def test_ability_to_save_changes_after_edition_of_item(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -309,6 +329,7 @@ def test_ability_to_save_changes_after_edition_of_item(driver_teardown_remove_it
         my_list_page.is_edited_gift_name_correct_in_item_section()
 
 
+@allure.feature('Edit item')
 def test_ability_to_copy_item_to_the_same_list(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -333,6 +354,7 @@ def test_ability_to_copy_item_to_the_same_list(driver_teardown_remove_item):
         my_list_page.is_item_copied()
 
 
+@allure.feature('Sort items')
 def test_ability_to_sort_items_by_stars(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -373,6 +395,7 @@ def test_ability_to_sort_items_by_stars(driver_teardown_remove_item):
                                               my_list_page_test_data.gift_name_with_1_star])
 
 
+@allure.feature('Sort items')
 def test_ability_to_sort_items_by_newest(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -407,6 +430,7 @@ def test_ability_to_sort_items_by_newest(driver_teardown_remove_item):
                                               my_list_page_test_data.gift_name_a])
 
 
+@allure.feature('Sort items')
 def test_ability_to_sort_items_by_item_name(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageAddItem(driver_teardown_remove_item)
@@ -441,6 +465,7 @@ def test_ability_to_sort_items_by_item_name(driver_teardown_remove_item):
                                               my_list_page_test_data.gift_name_c])
 
 
+@allure.feature('Edit item')
 def test_interruption_of_editing_item(driver_teardown_remove_item):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver_teardown_remove_item)
@@ -461,6 +486,7 @@ def test_interruption_of_editing_item(driver_teardown_remove_item):
         my_list_page.is_alert_displayed_and_could_be_accepted()
 
 
+@allure.feature('Edit item')
 def test_ability_to_set_item_as_i_got_this_item(driver):
     with allure.step('Open my list page'):
         my_list_page = MyListPageEditItem(driver)

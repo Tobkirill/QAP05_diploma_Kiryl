@@ -6,6 +6,7 @@ from pages.testing_data.create_new_list_test_data import name_of_list_text, note
 import allure
 
 
+@allure.feature('Create new list')
 def test_create_list_with_name_obligatory_field(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -18,6 +19,7 @@ def test_create_list_with_name_obligatory_field(driver_teardown_remove_list):
         my_list_page.is_list_contains_correct_name(name_of_list_text)
 
 
+@allure.feature('Create new list')
 def test_create_list_with_name_obligatory_and_note_optional_fields(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -33,6 +35,7 @@ def test_create_list_with_name_obligatory_and_note_optional_fields(driver_teardo
         my_list_page.is_list_contains_correct_note(note_text)
 
 
+@allure.feature('Create new list')
 def test_create_list_with_different_background_color(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -47,6 +50,7 @@ def test_create_list_with_different_background_color(driver_teardown_remove_list
         my_list_page.is_color_of_list_changed()
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_private_list(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -62,6 +66,7 @@ def test_ability_to_create_private_list(driver_teardown_remove_list):
                                               my_list_page_test_data.private_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_public_list_with_gifster_and_google_search_option(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -80,6 +85,7 @@ def test_ability_to_create_public_list_with_gifster_and_google_search_option(dri
                                               my_list_page_test_data.public_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_public_list_with_gifster_search_option(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -97,6 +103,7 @@ def test_ability_to_create_public_list_with_gifster_search_option(driver_teardow
                                               my_list_page_test_data.public_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_public_list_with_share_link_option(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -114,6 +121,7 @@ def test_ability_to_create_public_list_with_share_link_option(driver_teardown_re
                                               my_list_page_test_data.public_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_list_with_chosen_shared_group(driver_teardown_remove_list):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver_teardown_remove_list)
@@ -131,6 +139,7 @@ def test_ability_to_create_list_with_chosen_shared_group(driver_teardown_remove_
                                               my_list_page_test_data.shared_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_ability_to_create_list_with_shared_group_but_group_not_chosen(driver):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver)
@@ -148,6 +157,7 @@ def test_ability_to_create_list_with_shared_group_but_group_not_chosen(driver):
                                               my_list_page_test_data.private_label_near_settings_text)
 
 
+@allure.feature('Create new list')
 def test_create_list_with_empty_fields(driver):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver)
@@ -157,6 +167,7 @@ def test_create_list_with_empty_fields(driver):
         create_new_list_page.is_url_correct(create_new_list_url)
 
 
+@allure.feature('Create new list')
 def test_create_list_with_empty_name_and_filled_note_field(driver):
     with allure.step('Open create new list page'):
         create_new_list_page = CreateNewListPage(driver)
