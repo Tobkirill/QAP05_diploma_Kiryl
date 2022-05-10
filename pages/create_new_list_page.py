@@ -28,7 +28,3 @@ class CreateNewListPage(BasePage):
         option_element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located(option))
         option_element.click()
-
-
-
-

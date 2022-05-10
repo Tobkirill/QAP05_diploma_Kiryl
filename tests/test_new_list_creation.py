@@ -177,9 +177,3 @@ def test_create_list_with_empty_name_and_filled_note_field(driver):
     with allure.step('Create list with empty fields and verify current page'):
         create_new_list_page.create_new_list()
         create_new_list_page.is_url_correct(create_new_list_url)
-
-
-
-
-
-

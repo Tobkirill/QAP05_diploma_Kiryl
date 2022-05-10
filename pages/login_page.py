@@ -17,5 +17,3 @@ class LoginPage(BasePage):
         self.fill_in_field(email_field, email_to_login)
         self.fill_in_field(password_field, password_to_login)
         self.login()
-
-
