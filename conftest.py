@@ -3,9 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 from pages.login_page import LoginPage
-from pages.login_page import email
-from pages.login_page import password
-from pages.mylist_page import MyListPage
+from pages.testing_data.login_page_test_data import email, password
+from pages.mylist_page import MyListPageEditItem
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 
@@ -19,7 +18,6 @@ def driver():
     login_page.open()
     login_page.fill_in_form_and_login(email, password)
     yield driver
-    sleep(3)
     driver.quit()
 
 
@@ -30,7 +28,6 @@ def driver_not_logged_in():
     options.add_argument("start-maximized")
     driver = webdriver.Chrome(options=options)
     yield driver
-    sleep(3)
     driver.quit()
 
 
@@ -46,10 +43,9 @@ def driver_teardown_remove_item():
     yield driver
     try:
         sleep(1)
-        my_list_page = MyListPage(driver)
+        my_list_page = MyListPageEditItem(driver)
         my_list_page.open_my_list_page()
         my_list_page.remove_all_added_items()
-        sleep(3)
         driver.quit()
     except NoSuchElementException or TimeoutException:
         driver.quit()
@@ -66,10 +62,9 @@ def driver_teardown_remove_list():
     login_page.fill_in_form_and_login(email, password)
     yield driver
     try:
-        my_list_page = MyListPage(driver)
+        my_list_page = MyListPageEditItem(driver)
         my_list_page.open_my_list_page()
         my_list_page.delete_list()
-        sleep(3)
         driver.quit()
     except NoSuchElementException or TimeoutException:
         driver.quit()

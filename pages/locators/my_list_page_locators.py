@@ -1,0 +1,81 @@
+from selenium.webdriver.common.by import By
+
+full_username = (By.CSS_SELECTOR, '.hidden.ml-2')
+name_of_list_in_the_left_menu = (By.XPATH, '//*[@id="mylists-sidebar"]/div[1]/a[1]/span[1]/h3')
+name_of_list_in_the_center = (By.CSS_SELECTOR, '.w-full.text-center>h2')
+note_of_list_in_the_center = (By.CSS_SELECTOR, '.w-full.text-center>div>h3')
+section_with_red_background_color = (By.CLASS_NAME, 'bg-image-simple-4')
+privacy_label_in_the_left_menu = (By.CSS_SELECTOR, '[tabindex="-1"]>.privacy-text>span')
+privacy_label_near_settings = (By.CSS_SELECTOR, 'p.flex.items-center.text-sm')
+new_list_button = (By.CSS_SELECTOR, '.inline.mx-2')
+create_new_list_from_my_list_page_button = (By.CLASS_NAME, 'btn-tan-200')
+share_button = (By.CSS_SELECTOR, '[type=button]>.px-3')
+copy_link_button = (By.CSS_SELECTOR, '.w-48.mt-3')
+add_item_white_button = (By.CSS_SELECTOR, '.z-10.pl-2>button:nth-child(1)')
+add_item_red_button = (By.CSS_SELECTOR, '.pt-8>.btn.btn-red-600')
+item_1_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(1)')
+item_2_section = (By.CSS_SELECTOR, 'ul.-mt-5>li:nth-child(2)')
+items_section = (By.CSS_SELECTOR, 'ul.-mt-5>li')
+add_image_section = (By.CSS_SELECTOR, 'div.hidden>div>div>.border-dashed')
+web_search_field_in_add_image_pop_up = (By.CLASS_NAME, 'fsp-url-source__input')
+start_search_button = (By.CLASS_NAME, 'fsp-url-source__submit-button')
+search_results = (By.CLASS_NAME, 'fsp-image-grid__image')
+upload_image_button = (By.CSS_SELECTOR, '[title="Upload"]')
+close_add_image_pop_up_button = (By.CLASS_NAME, 'fsp-picker__close-button')
+image_in_the_last_step_of_upload = (By.CSS_SELECTOR, 'img.cropper-hidden')
+uploaded_image_section = (By.CSS_SELECTOR, 'div.hidden>div>div>img')
+remove_item_button = (By.CSS_SELECTOR, '.w-full.ml-4')
+copy_item_button = (By.CSS_SELECTOR, '.justify-center>[title="Copy item to another list"]')
+confirm_copy_item_button = (By.CSS_SELECTOR, '.btn-yellow-400.btn-sm')
+choose_list_dropdown = (By.CSS_SELECTOR, '[name="list"]')
+i_got_this_button = (By.CSS_SELECTOR, '.justify-center>[title=" Delete and move item to I Got This list "]')
+rate_1_stars_button = \
+    (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/div[2]/div/span[1]')
+rate_2_stars_button = \
+    (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/div[2]/div/span[2]')
+rate_3_stars_button = \
+    (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/div[2]/div/span[3]')
+rate_4_stars_button = \
+    (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/div[2]/div/span[4]')
+rate_5_stars_button = \
+    (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/div[2]/div/span[5]')
+star_1_in_items_section = (By.CSS_SELECTOR, '.w-20.ml-5>.flex>span:nth-child(1)>svg>path')
+star_2_in_items_section = (By.CSS_SELECTOR, '.w-20.ml-5>.flex>span:nth-child(2)>svg>path')
+star_3_in_items_section = (By.CSS_SELECTOR, '.w-20.ml-5>.flex>span:nth-child(3)>svg>path')
+star_4_in_items_section = (By.CSS_SELECTOR, '.w-20.ml-5>.flex>span:nth-child(4)>svg>path')
+star_5_in_items_section = (By.CSS_SELECTOR, '.w-20.ml-5>.flex>span:nth-child(5)>svg>path')
+stars_in_items_section = (star_1_in_items_section, star_2_in_items_section, star_3_in_items_section,
+                          star_4_in_items_section, star_5_in_items_section)
+sort_items_button = (By.CSS_SELECTOR, 'button.left-0')
+price_of_item_field = (By.CSS_SELECTOR, '.px-3>span>input')
+where_to_by_field = (By.CSS_SELECTOR, '.px-3>input')
+price_of_item_in_items_section = (By.CSS_SELECTOR, '.mr-6>h2')
+quantity_field = (By.CSS_SELECTOR, '.mt-2>.flex.items-center>:nth-child(2)')
+quantity_of_items_in_items_section = (By.CSS_SELECTOR, '.mr-7.w-18>h2')
+where_to_buy_field = (By.CSS_SELECTOR, '.px-3.mb-5>input')
+description_field = (By.CSS_SELECTOR, 'textarea.h-20')
+settings_button = (By.CSS_SELECTOR, 'p>a')
+delete_list_button = (By.CSS_SELECTOR, '.text-red-600.underline')
+yes_delete_button = (By.CSS_SELECTOR, '[name="confirm"]')
+gift_name_field = (By.CSS_SELECTOR, '.flex.px-6>.rounded-md')
+gift_name_field_in_edition_mode = (By.CSS_SELECTOR, '.px-5>input')
+name_of_gift_in_items_section = (By.CSS_SELECTOR, '.w-48>h2')
+save_adding_new_item_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[1]')
+save_edition_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[1]/ul/li/div[2]/div[2]/div/div[1]/div[7]/div/button[1]'
+)
+cancel_adding_new_item_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]/div[2]/div[1]/div[6]/div/button[2]')
+cancel_edition_button = (
+    By.XPATH, '/html/body/div[2]/main/section[2]/div[1]/ul/li/div[2]/div[2]/div/div[1]/div[7]/div/button[3]'
+)
+adding_new_item_info_message = (By.CSS_SELECTOR, 'div>span.ml-3')
+i_got_it_list = (By.CSS_SELECTOR, '[href="/list/i-got-this/"]')
+validation_warning = (By.CSS_SELECTOR, 'p.my-3')
+select_sort_option_dropdown = (By.CSS_SELECTOR, 'span>select')
+fetch_button = (By.CSS_SELECTOR, '.hidden>.py-0.pl-5')
+web_link_field = (By.CLASS_NAME, 'link')
+image_of_fetched_item_in_the_right = (By.XPATH, '/html/body/div[2]/main/section[2]/div[2]/div/div/div[2]'
+                                                '/div[2]/div[2]/div/div/img')
+image_of_fetched_item_in_the_below = (By.CSS_SELECTOR, '[style="max-height: 500px;"]')
