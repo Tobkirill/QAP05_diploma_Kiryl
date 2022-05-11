@@ -9,7 +9,6 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 
 @pytest.fixture(scope="function")
-# @pytest.fixture(scope="session")
 def driver():
     options = Options()
     options.add_argument("start-maximized")
@@ -22,7 +21,6 @@ def driver():
 
 
 @pytest.fixture(scope="function")
-# @pytest.fixture(scope="session")
 def driver_not_logged_in():
     options = Options()
     options.add_argument("start-maximized")
@@ -32,7 +30,6 @@ def driver_not_logged_in():
 
 
 @pytest.fixture(scope="function")
-# @pytest.fixture(scope="session")
 def driver_teardown_remove_item():
     options = Options()
     options.add_argument("start-maximized")
@@ -52,7 +49,6 @@ def driver_teardown_remove_item():
 
 
 @pytest.fixture(scope="function")
-# @pytest.fixture(scope="session")
 def driver_teardown_remove_list():
     options = Options()
     options.add_argument("start-maximized")
